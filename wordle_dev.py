@@ -43,7 +43,7 @@ if language == 'RU':
             shell = list(line)
             if not any(item in shell for item in ban) and len(numbers) > 0: 
                 posElements(numbers, word, shell)
-            elif all(item in shell for item in word) and len(numbers) == 0:
+            elif all(item in shell for item in word) and len(numbers) == 0 and not any(item in shell for item in ban) :
                 print(''.join(shell))
 if language == 'EN': 
     with open("words_en.txt") as w:
@@ -51,5 +51,5 @@ if language == 'EN':
             shell = list(line)
             if not any(item in shell for item in ban) and len(numbers) > 0: 
                 posElements(numbers, word, shell)
-            elif all(item in shell for item in word) and len(numbers) == 0:
+            elif all(item in shell for item in word) and len(numbers) == 0 and not any(item in shell for item in ban) :
                 print(''.join(shell))
