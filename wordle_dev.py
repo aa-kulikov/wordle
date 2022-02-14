@@ -1,4 +1,5 @@
 import sys
+import random
 
 def removeElements(A, B):
     return ', '.join(map(str, A)) in ', '.join(map(str, B))
@@ -22,7 +23,14 @@ if language != 'RU' and language != 'EN':
     print('Wrong language. Start me again')
     sys.exit(0)
 
-words = str(input("Enter letters: "))
+words = str(input("Enter letters. Enter 0, if you want to receive a random word to start game. \n"))
+if words == '0':
+    if language == 'EN':
+        print(random.choice(open("words_en.txt").read().split()))
+        sys.exit(0)
+    elif language == 'RU':
+        print(random.choice(open("words.txt").read().split()))
+        sys.exit(0)
 word = list(words)
 print(word)
 numbers = (input("Enter pos-s, with spaces. Enter none if you don't know pos-s: ").split())
