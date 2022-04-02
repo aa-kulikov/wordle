@@ -1,26 +1,48 @@
 import sys
 import random
 
-
 def generate_the_word(infile):
     random_line = random.choice(open(infile).read().split('\n'))
     return random_line
-
-def graphic(word, count):
-    for x in range(count):
-        print("XXXXX")
 
 def check_presence(word, lang):
     check = 0
     with open(lang) as w:
         for line in w:
             shell = list(line)
-            if all(item in shell for item in word):
+            if all(item in line for item in word):
                 check = 1
     if check != 1:
         check = 0
     return check
 
+def words_cmpr(word, secret):
+    true = 0
+    for i in range(len(word)):
+        if (word[i] == secret[i]):
+            true += 1
+    if true == 5:
+        true = 1
+    else: 
+        true = 0
+    return true
+
+def letter_cmpr(word, secret):
+    let_cmpr = ['0', '0', '0', '0', '0'] 
+    for i in range(len(word)):
+        for j in range(len(word)):
+            if (word[j] == secret[j]):
+                let_cmpr[j] = '1'
+            if (i != j) & (word[i] == secret[j]):
+                let_cmpr[i] = '2'
+    return let_cmpr
+
+def graphic(word, secret, count):
+    i = 0
+    for x in range(count):
+        l = letter_cmpr(word[i], secret)
+        print(word[i], "//", l[0], l[1], l[2], l[3], l[4])
+        i += 1
 
 print("W O R D L E")
 menu = str(input("Do you wish to play a game? (y/n) \n"))
@@ -28,25 +50,36 @@ if (menu == "Yes") | (menu == "yes") | (menu == "y"):
     print("Ok.\nWe shall play a WORDLE\n")
     language = str(input("What language do you prefer? Options are: RU, EN\n"))
     secret = "XXXXX"
-    if language == "RU":
+    if ((language == "RU") | (language == "ru") | (language == "r")):
         print("Your task is to guess a 5 letter word. Good luck.")
         secret_word = generate_the_word("words.txt")
         print(secret)
-    elif language == "EN":
+    elif ((language == "EN") | (language == "en") | (language == "e")):
         print("Your task is to guess a 5 letter word. Good luck.")
         secret_word = generate_the_word("words_en.txt")
-        count = 6
-        game = 0;
-        while ((count != 0) | (game == 1)):
-            graphic(secret, count)
-            guess = str(input("Enter your word:\n"))
-            b = check_presence(guess, "words_en.txt")
-            print(b)
-            while ((len(guess) != 5) | -(bool(b))):
-                print("Wrong type, my friend. Try again.\n")
-                guess = str(input("Enter your word:\n"))
-                b = check_presence(guess, "words_en.txt")
-                count -= 1
+     # secret_word = "civie"
+    count = 6
+    game = 0;
+    i = 0
+    array = ["XXXXX", "XXXXX", "XXXXX", "XXXXX", "XXXXX", "XXXXX"]
+    graphic(array, secret_word, count)
+    while ((i != count) | (game == 1)):
+        guess = str(input("Enter your word: "))
+        if len(guess) == 5:
+            array[i] = guess
+            graphic(array, secret_word, count)
+            i += 1
+            if (words_cmpr(guess, secret_word)) == 1:
+                game = 1
+                break
+        else:
+            print("You typed wrong word. Try again.\n")
+    if (game != 1):
+        print("\nYou lost. It's okay, though. Good luck next time. ")
+        print("Word was =", secret_word)
+    elif (game == 1):
+        print("Wow. You won. Congrats.")
+        print("Word was =", secret_word)
     else:
         print("You have typed something wrong. Restart me please.")
         sys.exit(0)
