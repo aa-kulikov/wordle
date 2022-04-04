@@ -5,17 +5,6 @@ def generate_the_word(infile):
     random_line = random.choice(open(infile).read().split('\n'))
     return random_line
 
-def check_presence(word, lang):
-    check = 0
-    with open(lang) as w:
-        for line in w:
-            shell = list(line)
-            if all(item in line for item in word):
-                check = 1
-    if check != 1:
-        check = 0
-    return check
-
 def words_cmpr(word, secret):
     true = 0
     for i in range(len(word)):
